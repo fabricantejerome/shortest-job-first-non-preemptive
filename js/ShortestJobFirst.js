@@ -43,15 +43,12 @@ class ShortestJobFirst {
 		}
 	}
 
-	startExecution($display, $canvas) {
+	startExecution($display, $canvas, $waiting_time) {
 		if (this.job_list.jobCount()) {
 			let seconds = 0;
 			let span    = 1;
 			
 			while (this.job_list.jobCount() || this.ready_queue.jobCount() || this.current_job.jobCount()) { 
-			//while (this.job_list.jobCount()) {
-			//for (let seconds = 0; (this.job_list.jobCount() || this.ready_queue.jobCount() || this.current_job.jobCount()); seconds++ ) {
-				//setTimeout(() => {
 					for (let [index, value] of this.job_list.data.entries()) {
 						let { job, arrival, burst } = this.job_list.data[index];
 
