@@ -2,11 +2,12 @@
 
 class ShortestJobFirst {
 
-	constructor(job_list, job_finish, current_job, ready_queue) {
+	constructor(job_list, job_finish, current_job, ready_queue, table_content) {
 		this.job_list      = job_list;
 		this.job_finish    = job_finish;
 		this.current_job   = current_job;
 		this.ready_queue   = ready_queue;
+		this.table_content = table_content;
 	}
 
 	filterData(job, arrival, burst) {
