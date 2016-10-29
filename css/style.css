@@ -1,0 +1,11 @@
+.block {
+	margin: 20px 0;
+}
+
+input {
+	margin-right: 10px;
+}
+
+#start-button {
+	font-weight: bold;
+}

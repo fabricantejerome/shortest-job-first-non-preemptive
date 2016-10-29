@@ -1,0 +1,62 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<button>test</button>
+	<div class="display">
+	</div>
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<script type="text/javascript">
+		let number = [];
+
+		$display = $('.display');
+
+		for (let i = 0; i < 20; i = i + 2) {
+			number.push(i);
+		}
+
+		// number.shift();
+
+		console.log(number.sort((x, y) => { return y - x }));
+
+		for (let i of number) {
+			console.log(i) + '<br />';
+		}
+
+		console.log(number.shift());
+
+		let names = [{first: 'Jerome', last: 'Fabricante'},
+					{first: 'Juan', last: 'Dela Cruz'}];
+
+		// console.log(name.shift());
+		let x = 0;
+		$('button').click(function(){
+
+			x = x + 1;
+
+			console.log(x);
+		});
+
+		let i = 0;
+		let interval;
+		while (i < 10) {
+			let vars = 0;
+			interval = setInterval(() => {
+				$display.append(`<span>${i}</span>`);
+				
+			}, 1000 * i);
+			i++;
+		}
+		clearInterval(interval);
+
+		/*for (let i = 0; i < 20; i++) {
+			setTimeout(() => {
+				//$display.html(i);
+				$display.append(`<span>${i}</span>`);
+			}, 1000 * i);
+		}
+*/
+	</script>
+</body>
+</html>

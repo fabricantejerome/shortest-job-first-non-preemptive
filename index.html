@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="./css/style.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-12">
+			<h1>Shortest Job First Non-Preemptive</h1>
+
+			<div class="block col-md-8">
+				<form class="block__form form-inline">
+					<input type="number" name="job_number" class="block__job form-control" placeholder="Job" required/>
+					<input type="number" name="arrival_time" class="block__arrival-time form-control" placeholder="Arrival Time" required/>
+					<input type="number" name="burst_time" class="block__burst-time form-control" placeholder="Burst Time" required/>
+					<input type="submit" value="Add Job " class="block__add-job btn btn-default form-control" />
+				</form>
+			</div>
+
+			<div class="timer col-md-4 text-center">
+				<h1 class="timer__seconds">0</h1>
+			</div>
+
+			<div id="job-display" class="col-md-8">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Job</th>
+							<th>Arrival Time</th>
+							<th>Burst Time</th>
+							<th>Finish Time</th>
+						</tr>
+					</thead>
+					<tbody id="table-content">
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-md-4 text-center">
+				<button class="btn btn-primary btn-lg hidden" id="start-button">START</button>
+			</div>
+
+			<div class="canvas col-md-12">
+				<h2>Gantt Chart</h2>
+				<div class="canvas__animation"></div>
+			</div>
+
+		</div>
+	</div>
+
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/Jobs.js"></script>
+	<script type="text/javascript" src="./js/JobsFinish.js"></script>
+	<script type="text/javascript" src="./js/ShortestJobFirst.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			const $form         = $('form');
+			const $start_button = $('#start-button');
+			const $timer        = $('.timer__seconds');
+			const $canvas       = $('.canvas__animation');
+
+			let job_list      = new Jobs();
+			let job_finish    = new JobsFinish();
+			let current_job   = new Jobs();
+			let ready_queue   = new Jobs();
+			let sjf           = new ShortestJobFirst(job_list, job_finish, current_job, ready_queue);
+
+			$form.on('submit', function(e){
+				e.preventDefault();
+
+				const $job = $('.block__job');
+				const $arrival_time = $('.block__arrival-time');
+				const $burst_time = $('.block__burst-time');
+				const $job_display = $('#table-content');
+
+				sjf.addJob($job.val(), $arrival_time.val(), $burst_time.val());
+
+				console.log(sjf);
+
+				$job_display.html(sjf.displayTable());
+
+				$job.val('');
+				$arrival_time.val('');
+				$burst_time.val('');
+
+				$start_button.removeClass('hidden');
+			})
+
+			$start_button.on('click', function(){
+				sjf.startExecution($timer, $canvas);
+			})
+
+		});
+	</script>
+</body>
+</html>
