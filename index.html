@@ -61,37 +61,40 @@
 			const $form         = $('form');
 			const $start_button = $('#start-button');
 			const $timer        = $('.timer__seconds');
+			const $waiting_time = $('.timer__average-waiting-time');
 			const $canvas       = $('.canvas__animation');
+			const $content      = $('.table-content');
 
-			let job_list      = new Jobs();
-			let job_finish    = new JobsFinish();
-			let current_job   = new Jobs();
-			let ready_queue   = new Jobs();
-			let sjf           = new ShortestJobFirst(job_list, job_finish, current_job, ready_queue);
+			let job_number  = 1;
+			let job_list    = new Jobs();
+			let job_finish  = new JobsFinish();
+			let current_job = new Jobs();
+			let ready_queue = new Jobs();
+			let sjf         = new ShortestJobFirst(job_list, job_finish, current_job, ready_queue, $content);
 
-			$form.on('submit', function(e){
+			$form.on('submit', function(e) {
 				e.preventDefault();
 
-				const $job = $('.block__job');
 				const $arrival_time = $('.block__arrival-time');
 				const $burst_time = $('.block__burst-time');
-				const $job_display = $('#table-content');
+				
 
-				sjf.addJob($job.val(), $arrival_time.val(), $burst_time.val());
+				sjf.addJob(job_number, $arrival_time.val(), $burst_time.val());
 
 				console.log(sjf);
 
-				$job_display.html(sjf.displayTable());
+				$content.html(sjf.displayTable());
 
-				$job.val('');
 				$arrival_time.val('');
 				$burst_time.val('');
 
 				$start_button.removeClass('hidden');
+
+				job_number = job_number + 1;
 			})
 
 			$start_button.on('click', function(){
-				sjf.startExecution($timer, $canvas);
+				sjf.startExecution($timer, $canvas, $waiting_time);
 			})
 
 		});
