@@ -64,16 +64,17 @@ class ShortestJobFirst {
 					if (!this.current_job.jobCount() && this.ready_queue.jobCount()) {
 						const shortestJob = this.getShortestBurst(this.ready_queue);
 						this.current_job.appendJob(shortestJob);
+						r_index = Math.floor((Math.random() * 41) + 1);
 					}
 
 					// Job does not arrive yet 
 					if (!this.ready_queue.jobCount() && !this.current_job.jobCount()) {
-						$canvas.append('<button class="btn btn-default">Idle</button>')
+						$canvas.append(`<button class='btn btn-default' style='border-radius: 0;'>Idle</button>`);
 					}
 
 					// reduce the burst time of the current job
 					if (this.current_job.jobCount()) {
-						$canvas.append(`<button class='btn btn-primary' style='background: green; border: none'>J${this.current_job.data[0].job}</button>`);
+						$canvas.append(`<button class='btn btn-default' style='background: ${colors[r_index]}; border-radius: 0; color: white'>J${this.current_job.data[0].job}</button>`);
 						
 						if (span == this.current_job.data[0].burst) {
 							let { job, arrival, burst } = this.current_job.data[0];
@@ -96,7 +97,7 @@ class ShortestJobFirst {
 			this.job_finish.data.sort(this.by('job'));
 			this.table_content.html(this.job_finish.displayJobs())
 			$display.html(`Seconds: ${seconds}`);
-			$waiting_time.html(`Average Waiting Time: ${this.calculateAverage()}`);
+			$waiting_time.html(`Average WT: ${this.calculateAverage().toFixed(2)}`);
 		}
 	}
 
