@@ -45,8 +45,10 @@ class ShortestJobFirst {
 
 	startExecution($display, $canvas, $waiting_time) {
 		if (this.job_list.jobCount()) {
-			let seconds = 0;
-			let span    = 1;
+			let seconds  = 0;
+			let span     = 1;
+			let r_index;
+			const colors = ['#561115', '#f9024d', '#bbaaee', '#727066', '#8b9dc3', '#3b5998', '#6565b3', '#422442', '#590a03', '#630c04', '#6e0e05', '#7b1006', '#891207', '#991508', '#ab1809', '#be1b0b', '#babdc1', '#515862', '#0c244c', '#0f52ba', '#d41f0d', '#51002b', '#ffca04', '#b6b4aa', '#a8ad9f', '#64675f', '#8fa0a7', '#bababa', '#800080', '#3366cc', '#339933', '#333399', '#336699', '#249324', '#4879aa', '#3454ab', '#242493', '#00ecff', '#00ff04', '#fff400', '#ff7400', '#ff0000'];
 			
 			while (this.job_list.jobCount() || this.ready_queue.jobCount() || this.current_job.jobCount()) { 
 					for (let [index, value] of this.job_list.data.entries()) {
