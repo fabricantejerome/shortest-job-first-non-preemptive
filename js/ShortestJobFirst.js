@@ -75,35 +75,26 @@ class ShortestJobFirst {
 						
 						if (span == this.current_job.data[0].burst) {
 							let { job, arrival, burst } = this.current_job.data[0];
-							const finish = seconds + 1;
-							const w = finish - arrival - burst;
+							const finish                = seconds + 1;
+							const w                     = finish - arrival - burst;
 					
 							this.job_finish.appendJob([{job: job, arrival: arrival, burst: burst, waiting: w, finish: finish}]);
 							this.current_job.removeJob(0);
-							span = 1;
+							span = 1; 
 						}
 						else {
 							span++;
 						}
 					}
-
-				//}, 1000 * seconds);
 				
 				seconds++;
 			}
 
-			console.log(this.ready_queue);
-			console.log(this.current_job);
-			console.log(this.job_finish);
-			$display.html(seconds);
 
-			//console.log(this.job_list.data[0]);
-			/*for (let i = 0; i < 20; i++) {
-				setTimeout(() => {
-					$display.html(i);
-					$canvas.append(`<span> ${i} </span>`).css('color', 'red');
-				}, 1000 * i);
-			}*/
+			this.job_finish.data.sort(this.by('job'));
+			this.table_content.html(this.job_finish.displayJobs())
+			$display.html(`Seconds: ${seconds}`);
+			$waiting_time.html(`Average Waiting Time: ${this.calculateAverage()}`);
 		}
 	}
 
