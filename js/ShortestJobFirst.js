@@ -112,6 +112,15 @@ class ShortestJobFirst {
 		}
 	}
 
+	calculateAverage() {
+		let sum = 0;
+		for (let[index, value] of this.job_finish.data.entries()) {
+			sum = sum + value.waiting;
+		}
+
+		return sum / this.job_finish.jobCount();
+	}
+
 	by(name) {
 		return (o, p) => {
 			let a, b;
