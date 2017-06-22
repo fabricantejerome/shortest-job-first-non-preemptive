@@ -8,6 +8,8 @@ class ShortestJobFirst {
 		this.current_job   = current_job;
 		this.ready_queue   = ready_queue;
 		this.table_content = table_content;
+		this.state;
+		this.callback;
 	}
 
 	filterData(job, arrival, burst) {
