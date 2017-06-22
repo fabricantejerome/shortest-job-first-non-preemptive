@@ -62,12 +62,14 @@
 	<script type="text/javascript" src="./js/ShortestJobFirst.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			const $form         = $('form');
-			const $start_button = $('#start-button');
-			const $timer        = $('.timer__seconds');
-			const $waiting_time = $('.timer__average-waiting-time');
-			const $canvas       = $('.canvas__animation');
-			const $content      = $('.table-content');
+			const $form          = $('form');
+			const $start_button  = $('#start-button');
+			const $pause_button  = $('#pause-button');
+			const $resume_button = $('#resume-button');
+			const $timer         = $('.timer__seconds');
+			const $waiting_time  = $('.timer__average-waiting-time');
+			const $canvas        = $('.canvas__animation');
+			const $content       = $('.table-content');
 
 			let job_number  = 1;
 			let job_list    = new Jobs();
