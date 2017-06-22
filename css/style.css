@@ -9,3 +9,16 @@ input {
 #start-button {
 	font-weight: bold;
 }
+
+.time_wrapper {
+	position: relative;
+	display: inline-block;
+	height: 60px;
+	margin-bottom: 10px;
+}
+
+.time {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
