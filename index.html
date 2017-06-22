@@ -94,14 +94,30 @@
 				$arrival_time.val('');
 				$burst_time.val('');
 
-				$start_button.removeClass('hidden');
+				$start_button.show();
 
 				job_number = job_number + 1;
 			})
 
-			$start_button.on('click', function(){
+			$start_button.on('click', function() {
+				$canvas.empty();
+				$(this).hide('Pause');
+				$pause_button.show();
 				sjf.startExecution($timer, $canvas, $waiting_time);
 			})
+
+			$pause_button.on('click', function() {
+				sjf.pause();
+				$(this).hide();
+				$resume_button.show();
+
+			});
+
+			$resume_button.on('click', function() {
+				sjf.resume();
+				$(this).hide();
+				$pause_button.show();
+			});
 
 		});
 	</script>
