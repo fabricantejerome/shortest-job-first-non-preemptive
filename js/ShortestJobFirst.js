@@ -47,59 +47,74 @@ class ShortestJobFirst {
 
 	startExecution($display, $canvas, $waiting_time) {
 		if (this.job_list.jobCount()) {
-			let seconds  = 0;
-			let span     = 1;
+			let seconds = 0;
+			let span    = 1;
+			let self    = this;
 			let r_index;
+
 			const colors = ['#561115', '#f9024d', '#bbaaee', '#727066', '#8b9dc3', '#3b5998', '#6565b3', '#422442', '#590a03', '#630c04', '#6e0e05', '#7b1006', '#891207', '#991508', '#ab1809', '#be1b0b', '#babdc1', '#515862', '#0c244c', '#0f52ba', '#d41f0d', '#51002b', '#ffca04', '#b6b4aa', '#a8ad9f', '#64675f', '#8fa0a7', '#bababa', '#800080', '#3366cc', '#339933', '#333399', '#336699', '#249324', '#4879aa', '#3454ab', '#242493', '#00ecff', '#00ff04', '#fff400', '#ff7400', '#ff0000'];
 			
-			while (this.job_list.jobCount() || this.ready_queue.jobCount() || this.current_job.jobCount()) { 
-					for (let [index, value] of this.job_list.data.entries()) {
-						let { job, arrival, burst } = this.job_list.data[index];
+			function loop() {
+				self.state = setTimeout(self.callback = function () {
+					for (let [index, value] of self.job_list.data.entries()) {
+						let { job, arrival, burst } = self.job_list.data[index];
 
 						// Add the job to the ready queue
 						if (arrival <= seconds) {
-							this.transferJob(this.job_list, this.ready_queue, index);
+							self.transferJob(self.job_list, self.ready_queue, index);
 						}
 					}
 
 					// Assign a job to be executed
-					if (!this.current_job.jobCount() && this.ready_queue.jobCount()) {
-						const shortestJob = this.getShortestBurst(this.ready_queue);
-						this.current_job.appendJob(shortestJob);
+					if (!self.current_job.jobCount() && self.ready_queue.jobCount()) {
+						const shortestJob = self.getShortestBurst(self.ready_queue);
+						self.current_job.appendJob(shortestJob);
 						r_index = Math.floor((Math.random() * 41) + 1);
 					}
 
 					// Job does not arrive yet 
-					if (!this.ready_queue.jobCount() && !this.current_job.jobCount()) {
-						$canvas.append(`<button class='btn btn-default' style='border-radius: 0;'>Idle</button>`);
+					if (!self.ready_queue.jobCount() && !self.current_job.jobCount()) {
+						$canvas.append(`<div class='time_wrapper'><button class='btn btn-default' style='border-radius: 0;'>Idle</button><div class='time'>${seconds}</div></div>`);
 					}
 
 					// reduce the burst time of the current job
-					if (this.current_job.jobCount()) {
-						$canvas.append(`<button class='btn btn-default' style='background: ${colors[r_index]}; border-radius: 0; color: white'>J${this.current_job.data[0].job}</button>`);
+					if (self.current_job.jobCount()) {
+						$canvas.append(`<div class='time_wrapper'><button class='btn btn-default' style='background: ${colors[r_index]}; border-radius: 0; color: white'>J${self.current_job.data[0].job}</button><div class='time'>${seconds}</div></div>`);
 						
-						if (span == this.current_job.data[0].burst) {
-							let { job, arrival, burst } = this.current_job.data[0];
+						if (span == self.current_job.data[0].burst) {
+							let { job, arrival, burst } = self.current_job.data[0];
 							const finish                = seconds + 1;
 							const w                     = finish - arrival - burst;
 					
-							this.job_finish.appendJob([{job: job, arrival: arrival, burst: burst, waiting: w, finish: finish}]);
-							this.current_job.removeJob(0);
+							self.job_finish.appendJob([{job: job, arrival: arrival, burst: burst, waiting: w, finish: finish}]);
+							self.current_job.removeJob(0);
 							span = 1; 
 						}
 						else {
 							span++;
 						}
 					}
-				
-				seconds++;
+
+					$display.html(`Time: ${seconds}`);
+					seconds++;
+
+					if (self.job_list.jobCount() || self.ready_queue.jobCount() || self.current_job.jobCount()) {
+						loop();
+					}
+					else {
+						self.job_finish.data.sort(self.by('job'));
+						self.table_content.html(self.job_finish.displayJobs());
+						$waiting_time.html(`Average WT: ${self.calculateAverage().toFixed(2)}`);
+
+						$('#pause-button').hide();
+						self.job_finish.data = [];
+					}
+				}, 1000)
+
 			}
 
+			loop();
 
-			this.job_finish.data.sort(this.by('job'));
-			this.table_content.html(this.job_finish.displayJobs())
-			$display.html(`Seconds: ${seconds}`);
-			$waiting_time.html(`Average WT: ${this.calculateAverage().toFixed(2)}`);
 		}
 	}
 
