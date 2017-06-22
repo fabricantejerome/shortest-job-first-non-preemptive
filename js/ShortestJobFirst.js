@@ -118,6 +118,14 @@ class ShortestJobFirst {
 		}
 	}
 
+	pause() {
+		clearTimeout(this.state);
+	}
+
+	resume() {
+		setTimeout(this.callback);
+	}
+
 	transferJob(src, dest, index) {
 		dest.appendJob(src.removeJob(index));
 	}
