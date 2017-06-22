@@ -17,7 +17,6 @@ class JobsFinish extends Jobs {
 		}
 
 		return table_content;
-		
 	}
 
 }
